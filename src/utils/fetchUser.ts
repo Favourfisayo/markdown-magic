@@ -7,5 +7,5 @@ export const fetchUser = async () => {
     console.error("Error fetching user:", error.message);
     return;
   }
-  return data.user;
+  return {data, error};
 };

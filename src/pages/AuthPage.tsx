@@ -1,12 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FileText, Sparkles, Mail, ArrowRight, CheckCircle } from "lucide-react";
 import AuthFunctions from "../Auth/AuthFunctions";
+import { fetchUser } from "../utils/fetchUser";
+import { useNavigate } from "react-router";
 
 const AuthPage: React.FC = () => {
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isEmailSent, setIsEmailSent] = useState(false);
   const { handleMagicLinkLogin } = AuthFunctions();
+  const navigate = useNavigate()
+  useEffect(() => {
+    const checkUser = async () => {
+      const result = await fetchUser()
+      const user = result?.data.user
+      const error = result?.error
+      
+      if(error || !user) return
+
+      navigate("/")
+    }
+    checkUser()
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
